@@ -11,6 +11,7 @@
     fire(data): when event is fired or published all the subscribed function should be invoked with the data.
  */
 
+    // Type Definition for Handlers
     type EventHandlerMock<T> = (arg: T) => void;
 
     export class EventMock<T> {
@@ -25,7 +26,7 @@
 
         // remove from list of subsribers
         unsubscribe(fn: EventHandlerMock<T>): void {
-            this.listOfSubscribers.filter(item => item !== fn);
+            this.listOfSubscribers = this.listOfSubscribers.filter(item => item !== fn);
         }
 
         // notify all subscribed handlers
@@ -39,29 +40,26 @@
 
 
     // 1st observer
-const eventHandler = function (item: string) {
+const fired = function (item: string) {
     console.log("fired:   " + item);
   };
   
   // 2nd observer
-  const eventHandler2 = function (item: string) {
+  const moved = function (item: string) {
     console.log("Moved: " + item);
   };
   
   const event = new EventMock<string>();
   
   // subscribe 1st observer
-  event.subscribe(eventHandler);
+  event.subscribe(fired);
   event.fire('event #1');
   
   // unsubscribe 1st observer
-  event.unsubscribe(eventHandler);
+  event.unsubscribe(fired);
   event.fire('event #2');
-  // output: "fired: event #1"
   
   // subscribe 1st & 2nd observer
-  event.subscribe(eventHandler);
-  event.subscribe(eventHandler2);
+  event.subscribe(fired);
+  event.subscribe(moved);
   event.fire('event #3');
-  // output "fired: event #3"
-  // output "Moved: event #3"
